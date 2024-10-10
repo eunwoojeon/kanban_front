@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 
 const KanbanBoard = () => {
   const [columns, setColumns] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const columnsId = useMemo(() => columns.map(column => column.id), [columns]);
   const [activeColumn, setActiveColumn] = useState(null);
   const sensors = useSensors(
@@ -16,6 +17,30 @@ const KanbanBoard = () => {
       }
     })
   )
+
+  const createTask = (columnId) => {
+    const newTask = {
+      id: generateId(),
+      columnId,
+      content: `Task ${tasks.length + 1}`
+    }
+    setTasks([...tasks, newTask]);
+  }
+
+  const deleteTask = (id) => {
+    const newTasks = tasks.filter(task => task.id !== id);
+    setTasks(newTasks);
+  }
+
+  const updateTask = (id, content) => {
+    const newTasks = tasks.map(task => {
+      if (task.id !== id) return task;
+      return { ...task, content };
+    })
+
+    setTasks(newTasks);
+  }
+
   const createNewColumn = () => {
     const columnToAdd = {
       id: generateId(),
@@ -70,17 +95,8 @@ const KanbanBoard = () => {
 
   return (
     <div
-      className='
-        m-auto
-        flex
-        min-h-screen
-        w-full
-        items-center
-        justify-center
-        overflow-x-auto
-        overflow-y-hidden
-        px-[40px]
-      '
+      className='m-auto flex min-h-screen w-full items-center
+      justify-center overflow-x-auto overflow-y-hidden px-[40px]'
     >
       <DndContext
         sensors={sensors}
@@ -96,27 +112,19 @@ const KanbanBoard = () => {
                   column={column}
                   deleteColumn={deleteColumn}
                   updateColumn={updateColumn}
+                  createTask={createTask}
+                  tasks={tasks.filter(task => task.columnId === column.id)}
+                  deleteTask={deleteTask}
+                  updateTask={updateTask}
                 />
               )}
             </SortableContext>
           </div>
           <button
             onClick={() => { createNewColumn() }}
-            className='
-            h-[60px]
-            w-[350px]
-            min-w-[350px]
-            cursor-pointer
-            rounded-lg
-            bg-mainBackgroundColor
-            border-2
-            border-columnBackgroundColor
-            p-4
-            ring-rose-500
-            hover:ring-2
-            flex
-            gap-2
-          '
+            className='h-[60px] w-[350px] min-w-[350px] cursor-pointer rounded-lg
+            bg-mainBackgroundColor border-2 border-columnBackgroundColor
+            p-4 ring-rose-500 hover:ring-2 flex gap-2'
           >
             <PlusIcon />Add Column
           </button>
@@ -128,6 +136,10 @@ const KanbanBoard = () => {
                 column={activeColumn}
                 deleteColumn={deleteColumn}
                 updateColumn={updateColumn}
+                createTask={createTask}
+                tasks={tasks.filter(task => task.columnId === activeColumn.id)}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
               />}
           </DragOverlay>,
           document.body
