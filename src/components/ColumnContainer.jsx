@@ -1,10 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TrashIcon from '../icons/TrashIcon'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from "@dnd-kit/utilities"
 
-const ColumnContainer = ({ column, deleteColumn }) => {
+const ColumnContainer = ({ column, deleteColumn, updateColumn }) => {
+  const [editMode, setEditMode] = useState(false);
+  const { setNodeRef, attributes, listeners, transform, transition, isDragging } = useSortable({
+    id: column.id,
+    data: {
+      type: "Column",
+      column
+    },
+    disabled: editMode
+  })
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform)
+  }
+
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className='
+          bg-columnBackgroundColor
+          w-[350px]
+          h-[500px]
+          max-h-[500px]
+          rounded-md
+          flex
+          flex-col
+          opacity-40
+          border-2
+          border-rose-500
+        '
+      >
+
+      </div>
+    )
+  }
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
       className='
         bg-columnBackgroundColor
         w-[350px]
@@ -17,6 +57,11 @@ const ColumnContainer = ({ column, deleteColumn }) => {
     >
 
       <div
+        {...attributes}
+        {...listeners}
+        onClick={() => {
+          setEditMode(true);
+        }}
         className='
         bg-mainBackgroundColor
           text-md
@@ -46,7 +91,31 @@ const ColumnContainer = ({ column, deleteColumn }) => {
               rounded-full
             '
           >0</div>
-          {column.title}
+          {!editMode && column.title}
+          {editMode &&
+            <input
+              className='
+                bg-black
+                focus:border-rose-50
+                border
+                rounded
+                outline-none
+                px-2
+              '
+              value={column.title}
+              onChange={e=> {
+                updateColumn(column.id, e.target.value);
+              }}
+              autoFocus
+              onBlur={() => {
+                setEditMode(false);
+              }}
+              onKeyDown={e => {
+                if (e.key !== 'Enter') return;
+                setEditMode(false);
+              }}
+            />
+          }
         </div>
         <button
           onClick={() => {
