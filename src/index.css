@@ -1,10 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
-html,
-body,
 #wrap {
+  width: 100vw;
+  height: 100vh;
+  font-family: Noto Sans KR
+}
+
+/* html,
+body, */
+#kanban {
   @apply bg-black text-white box-border
 }
 

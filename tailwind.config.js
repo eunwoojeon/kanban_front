@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         "mainBackgroundColor": '#0D1117',
         "columnBackgroundColor": '#161C22'
+      },
+      backgroundImage: {
+        "stickyNote": "url('/public/sticky-note.png')"
       }
     },
   },
