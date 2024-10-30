@@ -3,16 +3,14 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
+html {
+  font-size: 16px;
+}
+
 #wrap {
   width: 100vw;
   height: 100vh;
   font-family: Noto Sans KR
-}
-
-/* html,
-body, */
-#kanban {
-  @apply bg-black text-white box-border
 }
 
 ::-webkit-scrollbar {
@@ -30,17 +28,3 @@ body, */
 .task > ::-webkit-scrollbar-thumb {
   @apply bg-sky-500 rounded-xl
 }
-
-/* body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */

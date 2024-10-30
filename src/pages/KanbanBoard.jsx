@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import PlusIcon from '../icons/PlusIcon'
 import ColumnContainer from '../components/ColumnContainer';
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
@@ -12,6 +12,7 @@ const KanbanBoard = () => {
   const columnsId = useMemo(() => columns.map(column => column.id), [columns]);
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -165,7 +166,8 @@ const KanbanBoard = () => {
   return (
     <div
       className='m-auto flex min-h-screen w-full items-center
-      justify-center overflow-x-auto overflow-y-hidden px-[40px]'
+      justify-center overflow-x-auto overflow-y-hidden px-[40px]
+      bg-black text-white box-border'
     >
       {/* 
       DndContext : dnd 구성요소가 서로 상호 작용하기 위해 DndContext 선언
